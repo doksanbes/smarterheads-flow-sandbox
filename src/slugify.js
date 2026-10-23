@@ -1,13 +1,9 @@
 /**
  * URL slug generation.
  *
- * Known bug (Issue #2): German umlauts and ß are dropped instead of being
- * transliterated ("Über Größe" → "ber-gre" instead of "ueber-groesse"), and
- * leading/trailing dashes are not trimmed.
- *
- * This issue is intentionally open-ended: there are several valid fixes
- * (manual map vs. Unicode normalize), so two experts can propose different
- * patches and we can test consolidation.
+ * German umlauts and ß are transliterated to ae/oe/ue and ss. Canonically
+ * equivalent inputs are normalized before transliteration. Characters
+ * outside ASCII letters and digits become separators, with edge dashes trimmed.
  */
 
 /**
@@ -15,7 +11,11 @@
  * @returns {string}
  */
 export function slugify(input) {
+  const german = { ä: 'ae', ö: 'oe', ü: 'ue', ß: 'ss' };
   return input
+    .normalize('NFC')
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-');
+    .replace(/[äöüß]/g, (character) => german[character])
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
