@@ -1,0 +1,13 @@
+{
+  "name": "smarterheads-flow-sandbox",
+  "version": "0.1.0",
+  "description": "Tiny test repo to validate the SmarterHeads flow: load → review → patch → staging fork → PR → merge.",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
